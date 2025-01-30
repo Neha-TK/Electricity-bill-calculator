@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Calculate Electricity Bill</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: linear-gradient(135deg, #4158D0, #C850C0,#FFCC70);
+            color: #fff;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+
+        .container {
+            display: flex;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+            backdrop-filter: blur(10px);
+            overflow: hidden;
+            max-width: 800px;
+            width: 100%;
+        }
+
+        .calculator {
+            padding: 20px;
+            flex: 1;
+        }
+
+        .details {
+            padding: 20px;
+            background: rgba(0, 0, 0, 0.2);
+            width: 250px;
+        }
+
+        h1 {
+            font-size: 24px;
+            margin-bottom: 20px;
+        }
+
+        #quiz-form {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        #units {
+            padding: 10px;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            outline: none;
+        }
+
+        #unit-submit {
+            padding: 10px;
+            border: none;
+            border-radius: 5px;
+            background: #480844;
+            color: #fff;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background 0.3s ease;
+        }
+
+        #unit-submit:hover {
+            background: #780f71;
+        }
+
+        .result {
+            margin-top: 20px;
+            font-size: 18px;
+            font-weight: bold;
+        }
+
+        .details h2 {
+            font-size: 20px;
+            margin-bottom: 15px;
+        }
+
+        .details ul {
+            list-style-type: none;
+            padding: 0;
+        }
+
+        .details li {
+            margin-bottom: 10px;
+            font-size: 14px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Calculator Section -->
+        <div class="calculator">
+            <h1>Calculate Electricity Bill</h1>
+            <form id="quiz-form">
+                <input type="number" id="units" placeholder="Please enter no. of Units" required />
+                <input type="submit" id="unit-submit" value="Calculate Bill" />
+            </form>
+            <br><br>
+            <div class="result" id="result"></div>
+        </div>
+
+        <!-- Pricing Details Section -->
+        <div class="details">
+            <h2>Pricing Details</h2>
+            <ul>
+                <li>₹10.00 per unit for the first 50 units</li>
+                <li>₹20.00 per unit for the next 50 units (51-100)</li>
+                <li>₹30.00 per unit for the next 100 units (101-200)</li>
+                <li>₹40.00 per unit for units above 200</li>
+            </ul>
+        </div>
+    </div>
+
+    <script>
+        // Function to calculate electricity bill
+        function calculateBill(units) {
+            const unitCostFirst = 10.0;
+            const unitCostSecond = 20.0;
+            const unitCostThird = 30.0;
+            const unitCostFourth = 40.0;
+
+            let bill = 0;
+
+            if (units <= 50) {
+                bill = units * unitCostFirst;
+            } else if (units > 50 && units <= 100) {
+                bill = (50 * unitCostFirst) + ((units - 50) * unitCostSecond);
+            } else if (units > 100 && units <= 200) {
+                bill = (50 * unitCostFirst) + (50 * unitCostSecond) + ((units - 100) * unitCostThird);
+            } else {
+                bill = (50 * unitCostFirst) + (50 * unitCostSecond) + (100 * unitCostThird) + ((units - 200) * unitCostFourth);
+            }
+
+            return bill.toFixed(2); // Return the bill rounded to 2 decimal places
+        }
+
+        // Handle form submission
+        document.getElementById('quiz-form').addEventListener('submit', function (e) {
+            e.preventDefault(); // Prevent the form from submitting
+
+            // Get the units value
+            const units = parseFloat(document.getElementById('units').value);
+
+            // Calculate the bill
+            const bill = calculateBill(units);
+
+            // Display the result
+            document.getElementById('result').innerHTML = `Total amount for ${units} units = ₹${bill}`;
+        });
+    </script>
+</body>
+</html>
